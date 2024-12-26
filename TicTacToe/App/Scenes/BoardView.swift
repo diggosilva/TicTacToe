@@ -54,6 +54,15 @@ class BoardView: UIView {
     
     lazy var vStackView: UIStackView = buildStackView(arrangedSubviews: [hStackViewA, hStackViewB, hStackViewC], axis: .vertical)
     
+    lazy var resetButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitle("Reset Game", for: .normal)
+        btn.titleLabel?.font = .systemFont(ofSize: 30, weight: .semibold)
+        btn.addTarget(self, action: #selector(resetGame), for: .touchUpInside)
+        return btn
+    }()
+    
     lazy var buttons: [UIButton] = [buttonA1, buttonA2, buttonA3, buttonB1, buttonB2, buttonB3, buttonC1, buttonC2, buttonC3]
     
     weak var delegate: BoardViewDelegate?
@@ -71,15 +80,43 @@ class BoardView: UIView {
     }
     
     @objc private func buttonTapped(_ sender: UIButton) {
-        delegate?.buttonTapped(sender)
+        emptySpace -= 1
+        labelTurn.text = isXTurn ? "É a vez de ⭕" : "É a vez de ❌"
+        sender.setTitle(isXTurn ? "❌" : "⭕", for: .normal)
+        sender.isEnabled = false
+        isXTurn.toggle()
+        checkWinner(sender)
+//        delegate?.buttonTapped(sender)
     }
     
     func checkWinner(_ sender: UIButton) {
-        delegate?.checkWinner(sender)
+        if buttonA1.currentTitle == sender.currentTitle && buttonA2.currentTitle == sender.currentTitle && buttonA3.currentTitle == sender.currentTitle ||
+           buttonB1.currentTitle == sender.currentTitle && buttonB2.currentTitle == sender.currentTitle && buttonB3.currentTitle == sender.currentTitle ||
+           buttonC1.currentTitle == sender.currentTitle && buttonC2.currentTitle == sender.currentTitle && buttonC3.currentTitle == sender.currentTitle  {
+               buttons.forEach({ $0.isEnabled = false })
+               print("DEBUG: HORIZONTAL WIN")
+        }
+        else if buttonA1.currentTitle == sender.currentTitle && buttonB1.currentTitle == sender.currentTitle && buttonC1.currentTitle == sender.currentTitle ||
+                buttonA2.currentTitle == sender.currentTitle && buttonB2.currentTitle == sender.currentTitle && buttonC2.currentTitle == sender.currentTitle ||
+                buttonA3.currentTitle == sender.currentTitle && buttonB3.currentTitle == sender.currentTitle && buttonC3.currentTitle == sender.currentTitle  {
+            buttons.forEach({ $0.isEnabled = false })
+            print("DEBUG: VERTICAL WIN")
+        }
+        else if buttonA1.currentTitle == sender.currentTitle && buttonB2.currentTitle == sender.currentTitle && buttonC3.currentTitle == sender.currentTitle ||
+                buttonA3.currentTitle == sender.currentTitle && buttonB2.currentTitle == sender.currentTitle && buttonC1.currentTitle == sender.currentTitle {
+            buttons.forEach({ $0.isEnabled = false })
+            print("DEBUG: DIAGONAL WIN")
+        } else if emptySpace == 0 {
+            print("DEBUG: EMPATE")
+        }
+//        delegate?.checkWinner(sender)
     }
     
     @objc private func resetGame() {
-        delegate?.resetGame()
+        buttons.forEach({ $0.setTitle("", for: .normal) })
+        buttons.forEach({ $0.isEnabled = true })
+        emptySpace = 9
+//        delegate?.resetGame()
     }
     
     private func setupView() {
@@ -89,7 +126,7 @@ class BoardView: UIView {
     
     private func setHierarchy() {
         backgroundColor = .systemBackground
-        addSubviews([labelTurn, vStackView])
+        addSubviews([labelTurn, vStackView, resetButton])
     }
     
     private func setConstraints() {
@@ -101,6 +138,9 @@ class BoardView: UIView {
             vStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             vStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             vStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            
+            resetButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            resetButton.centerXAnchor.constraint(equalTo: centerXAnchor),
         ])
     }
     
