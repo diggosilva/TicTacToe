@@ -7,21 +7,6 @@
 
 import UIKit
 
-class BoardViewController: UIViewController {
-    
-    let boardView = BoardView()
-    
-    override func loadView() {
-        super.loadView()
-        view = boardView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-}
-
 protocol BoardViewDelegate: AnyObject {
     func buttonTapped(_ sender: UIButton)
     func checkWinner(_ sender: UIButton)
@@ -80,43 +65,15 @@ class BoardView: UIView {
     }
     
     @objc private func buttonTapped(_ sender: UIButton) {
-        emptySpace -= 1
-        labelTurn.text = isXTurn ? "É a vez de ⭕" : "É a vez de ❌"
-        sender.setTitle(isXTurn ? "❌" : "⭕", for: .normal)
-        sender.isEnabled = false
-        isXTurn.toggle()
-        checkWinner(sender)
-//        delegate?.buttonTapped(sender)
+        delegate?.buttonTapped(sender)
     }
     
     func checkWinner(_ sender: UIButton) {
-        if buttonA1.currentTitle == sender.currentTitle && buttonA2.currentTitle == sender.currentTitle && buttonA3.currentTitle == sender.currentTitle ||
-           buttonB1.currentTitle == sender.currentTitle && buttonB2.currentTitle == sender.currentTitle && buttonB3.currentTitle == sender.currentTitle ||
-           buttonC1.currentTitle == sender.currentTitle && buttonC2.currentTitle == sender.currentTitle && buttonC3.currentTitle == sender.currentTitle  {
-               buttons.forEach({ $0.isEnabled = false })
-               print("DEBUG: HORIZONTAL WIN")
-        }
-        else if buttonA1.currentTitle == sender.currentTitle && buttonB1.currentTitle == sender.currentTitle && buttonC1.currentTitle == sender.currentTitle ||
-                buttonA2.currentTitle == sender.currentTitle && buttonB2.currentTitle == sender.currentTitle && buttonC2.currentTitle == sender.currentTitle ||
-                buttonA3.currentTitle == sender.currentTitle && buttonB3.currentTitle == sender.currentTitle && buttonC3.currentTitle == sender.currentTitle  {
-            buttons.forEach({ $0.isEnabled = false })
-            print("DEBUG: VERTICAL WIN")
-        }
-        else if buttonA1.currentTitle == sender.currentTitle && buttonB2.currentTitle == sender.currentTitle && buttonC3.currentTitle == sender.currentTitle ||
-                buttonA3.currentTitle == sender.currentTitle && buttonB2.currentTitle == sender.currentTitle && buttonC1.currentTitle == sender.currentTitle {
-            buttons.forEach({ $0.isEnabled = false })
-            print("DEBUG: DIAGONAL WIN")
-        } else if emptySpace == 0 {
-            print("DEBUG: EMPATE")
-        }
-//        delegate?.checkWinner(sender)
+        delegate?.checkWinner(sender)
     }
     
     @objc private func resetGame() {
-        buttons.forEach({ $0.setTitle("", for: .normal) })
-        buttons.forEach({ $0.isEnabled = true })
-        emptySpace = 9
-//        delegate?.resetGame()
+        delegate?.resetGame()
     }
     
     private func setupView() {
