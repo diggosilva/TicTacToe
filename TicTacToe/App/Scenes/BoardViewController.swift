@@ -47,25 +47,58 @@ extension BoardViewController: BoardViewDelegate {
            boardView.buttonC1.currentTitle == sender.currentTitle && boardView.buttonC2.currentTitle == sender.currentTitle && boardView.buttonC3.currentTitle == sender.currentTitle  {
                boardView.buttons.forEach({ $0.isEnabled = false })
                print("DEBUG: HORIZONTAL WIN")
+            alert(title: "Vitória de \(sender.currentTitle ?? "")", message: "Jogar novamente?")
         }
         else if boardView.buttonA1.currentTitle == sender.currentTitle && boardView.buttonB1.currentTitle == sender.currentTitle && boardView.buttonC1.currentTitle == sender.currentTitle ||
                 boardView.buttonA2.currentTitle == sender.currentTitle && boardView.buttonB2.currentTitle == sender.currentTitle && boardView.buttonC2.currentTitle == sender.currentTitle ||
                 boardView.buttonA3.currentTitle == sender.currentTitle && boardView.buttonB3.currentTitle == sender.currentTitle && boardView.buttonC3.currentTitle == sender.currentTitle  {
             boardView.buttons.forEach({ $0.isEnabled = false })
             print("DEBUG: VERTICAL WIN")
+            alert(title: "Vitória de \(sender.currentTitle ?? "")", message: "Jogar novamente?")
         }
         else if boardView.buttonA1.currentTitle == sender.currentTitle && boardView.buttonB2.currentTitle == sender.currentTitle && boardView.buttonC3.currentTitle == sender.currentTitle ||
                 boardView.buttonA3.currentTitle == sender.currentTitle && boardView.buttonB2.currentTitle == sender.currentTitle && boardView.buttonC1.currentTitle == sender.currentTitle {
             boardView.buttons.forEach({ $0.isEnabled = false })
             print("DEBUG: DIAGONAL WIN")
+            alert(title: "Vitória de \(sender.currentTitle ?? "")", message: "Jogar novamente?")
         } else if boardView.emptySpace == 0 {
             print("DEBUG: EMPATE")
+            alert(title: "Empate", message: "Jogar novamente?")
+        }
+        
+        func alert(title: String, message: String) {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+            let resetAction = UIAlertAction(title: "Sim", style: .default) { action in
+                self.resetGame()
+            }
+            
+            let gameOverAction = UIAlertAction(title: "Não", style: .default) { action in
+                self.gameOver()
+            }
+            alert.addAction(resetAction)
+            alert.addAction(gameOverAction)
+            present(alert, animated: true)
         }
     }
     
     func resetGame() {
-        boardView.buttons.forEach({ $0.setTitle("", for: .normal) })
-        boardView.buttons.forEach({ $0.isEnabled = true })
-        boardView.emptySpace = 9
+        UIView.animate(withDuration: 0.25) {
+            self.boardView.vStackView.alpha = 0.0
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            self.boardView.buttons.forEach({ $0.setTitle("", for: .normal) })
+            self.boardView.buttons.forEach({ $0.isEnabled = true })
+            self.boardView.buttons.forEach({ $0.alpha = 1.0 })
+            self.boardView.vStackView.alpha = 1.0
+            self.boardView.emptySpace = 9
+        }
+    }
+    
+    func gameOver() {
+        UIView.animate(withDuration: 0.25) {
+            self.boardView.vStackView.alpha = 0.0
+            self.boardView.gameOverLabel.alpha = 1.0
+            self.boardView.labelTurn.alpha = 0.0
+        }
     }
 }
