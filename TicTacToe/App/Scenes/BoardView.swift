@@ -39,13 +39,15 @@ class BoardView: UIView {
     
     lazy var vStackView: UIStackView = buildStackView(arrangedSubviews: [hStackViewA, hStackViewB, hStackViewC], axis: .vertical)
     
-    lazy var resetButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Reset Game", for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 30, weight: .semibold)
-        btn.addTarget(self, action: #selector(resetGame), for: .touchUpInside)
-        return btn
+    lazy var gameOverLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.textAlignment = .center
+        lbl.text = "Fim de jogo!\nObrigado por jogar!\n🤘🏻😉"
+        lbl.numberOfLines = 0
+        lbl.alpha = 0.0
+        lbl.font = .systemFont(ofSize: 30, weight: .semibold)
+        return lbl
     }()
     
     lazy var buttons: [UIButton] = [buttonA1, buttonA2, buttonA3, buttonB1, buttonB2, buttonB3, buttonC1, buttonC2, buttonC3]
@@ -83,7 +85,7 @@ class BoardView: UIView {
     
     private func setHierarchy() {
         backgroundColor = .systemBackground
-        addSubviews([labelTurn, vStackView, resetButton])
+        addSubviews([labelTurn, vStackView, gameOverLabel])
     }
     
     private func setConstraints() {
@@ -96,8 +98,8 @@ class BoardView: UIView {
             vStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             vStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             
-            resetButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            resetButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            gameOverLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            gameOverLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
     
