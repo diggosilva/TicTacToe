@@ -102,13 +102,3 @@ extension BoardViewController: BoardViewDelegate {
         }
     }
 }
-
-// MARK: commits a adicionar
-
-/*
- Removido o botão Reset Game
- 
- Implementado alerta quando o jogo termina
- 
- Implementado um agradecimento quando usuario decide não jogar mais
- */
