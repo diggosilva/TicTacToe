@@ -46,23 +46,19 @@ extension BoardViewController: BoardViewDelegate {
            boardView.buttonB1.currentTitle == sender.currentTitle && boardView.buttonB2.currentTitle == sender.currentTitle && boardView.buttonB3.currentTitle == sender.currentTitle ||
            boardView.buttonC1.currentTitle == sender.currentTitle && boardView.buttonC2.currentTitle == sender.currentTitle && boardView.buttonC3.currentTitle == sender.currentTitle  {
                boardView.buttons.forEach({ $0.isEnabled = false })
-               print("DEBUG: HORIZONTAL WIN")
             alert(title: "Vitória de \(sender.currentTitle ?? "")", message: "Jogar novamente?")
         }
         else if boardView.buttonA1.currentTitle == sender.currentTitle && boardView.buttonB1.currentTitle == sender.currentTitle && boardView.buttonC1.currentTitle == sender.currentTitle ||
                 boardView.buttonA2.currentTitle == sender.currentTitle && boardView.buttonB2.currentTitle == sender.currentTitle && boardView.buttonC2.currentTitle == sender.currentTitle ||
                 boardView.buttonA3.currentTitle == sender.currentTitle && boardView.buttonB3.currentTitle == sender.currentTitle && boardView.buttonC3.currentTitle == sender.currentTitle  {
             boardView.buttons.forEach({ $0.isEnabled = false })
-            print("DEBUG: VERTICAL WIN")
             alert(title: "Vitória de \(sender.currentTitle ?? "")", message: "Jogar novamente?")
         }
         else if boardView.buttonA1.currentTitle == sender.currentTitle && boardView.buttonB2.currentTitle == sender.currentTitle && boardView.buttonC3.currentTitle == sender.currentTitle ||
                 boardView.buttonA3.currentTitle == sender.currentTitle && boardView.buttonB2.currentTitle == sender.currentTitle && boardView.buttonC1.currentTitle == sender.currentTitle {
             boardView.buttons.forEach({ $0.isEnabled = false })
-            print("DEBUG: DIAGONAL WIN")
             alert(title: "Vitória de \(sender.currentTitle ?? "")", message: "Jogar novamente?")
         } else if boardView.emptySpace == 0 {
-            print("DEBUG: EMPATE")
             alert(title: "Empate", message: "Jogar novamente?")
         }
         
