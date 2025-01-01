@@ -61,20 +61,20 @@ extension BoardViewController: BoardViewDelegate {
         } else if boardView.emptySpace == 0 {
             alert(title: "Empate", message: "Jogar novamente?")
         }
-        
-        func alert(title: String, message: String) {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-            let resetAction = UIAlertAction(title: "Sim", style: .default) { action in
-                self.resetGame()
-            }
-            
-            let gameOverAction = UIAlertAction(title: "Não", style: .default) { action in
-                self.gameOver()
-            }
-            alert.addAction(resetAction)
-            alert.addAction(gameOverAction)
-            present(alert, animated: true)
+    }
+    
+    func alert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        let resetAction = UIAlertAction(title: "Sim", style: .default) { action in
+            self.resetGame()
         }
+        
+        let gameOverAction = UIAlertAction(title: "Não", style: .default) { action in
+            self.gameOver()
+        }
+        alert.addAction(resetAction)
+        alert.addAction(gameOverAction)
+        present(alert, animated: true)
     }
     
     func resetGame() {
