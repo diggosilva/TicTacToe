@@ -16,7 +16,7 @@ A Swift iOS TicTacToe app. A very simple application built solely for study purp
 | --- | --- | --- |
 | ![Demo](https://github.com/user-attachments/assets/9634850b-aefd-4a47-a69a-5b688e791c51) | ![Light](https://github.com/user-attachments/assets/eb4785ab-77d5-4da6-8a29-630e39fe3dc9) | ![Dark](https://github.com/user-attachments/assets/87fc4ffc-4d55-46a3-b92d-235a96770be3) |
 
-    ## Contents
+## Contents
 
 - [Requirements](#requirements)
 - [Functionalities](#functionalities)
